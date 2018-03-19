@@ -19,20 +19,59 @@ COMPILACIÓN : usamos el comando gcc Practica01.c TADPila.c Evaluador.c -o Pract
 #include "Presentacion.h"
 #include "TADColaDin.h"
 
-boolean isContinue(){
-	puts("Teclea la opcion que desees");
-	printf("¿ regresar al menu de simulaciones ? \n 1-.SI \n 2-.NO \n");
-	scanf();
-}
-int int main()
-{
-	/* code */
-	int opc;
-	boolean 
-	// menu para las simulaciones
-	while(isContinue()) // mientras el usiario quiera se regresara al menu
-	{
 
-	}
+// Esta funcion solo nos dira si el usuario quiere continuar en el menu o ya no
+boolean isContinue(){
+	boolean isContinue = FALSE; // saber si quiere continuar en el menu 
+	int opc;
+	puts("\n Teclea la opcion que desees");
+	printf("Deseas regresar al menu de simulaciones ? \n 1-.SI \n 2-.NO \n");
+	scanf("%i",&opc);
+	// si quisi continuar se cambia a verdaero
+	if(opc == 1)
+		isContinue=TRUE; // si es 1 entonces quiere continuar , si no se mantiene en FASLE
+
+	return isContinue; // regresamos
+}
+
+int main()
+{
+	int opc; 
+	// menu para las simulaciones
+	boolean continuar = TRUE; // sera verdadero hasta que el usuario ya no quiera
+	
+	while(continuar)
+	{
+		// Vemos que simulacion ejecutar
+		puts("\n Tecla la simulacion que deseas realizar"); // puts agrega un salto de linea.
+		printf("%s\n", " 1-.SUPERMERCADO \n 2-.PROCESOS S.O \n 3-.BANCO");
+		scanf("%i",&opc);
+		// ejecutamos la opcion seleccionada
+		switch(opc)
+		{
+			case 1:
+				// ejetutamos la simulacion del supermercado
+				printf("%s\n", "Supermercado");
+			break;
+			
+			case 2:
+				// Ejetucamos la simulacion de Procesos S.O
+				printf("%s\n", "Procesos S.O");
+			break;
+
+			case 3:
+				// Ejecutamos banco
+				printf("%s\n", "Banco");
+			break;
+			
+			default:
+				// no es ninguna opcion
+				printf("%s\n", "No has elegido ninguna opcion correcta");
+			break;
+		}
+
+		continuar = isContinue();
+	} // mientras el usiario quiera se regresara al menu
+	
 	return 0;
 }
