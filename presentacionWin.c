@@ -7,7 +7,7 @@ Compilación de la libreria: Windows (gcc -c presentacionWin.c)
 */
 //LIBRERIAS
 #include <windows.h>
-#include"presentacion.h"
+#include"Presentacion.h"
 
 //DEFINICIÓN DE FUNCIONES
 
