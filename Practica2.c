@@ -13,18 +13,19 @@ COMPILACIÓN : usamos el comando gcc Practica01.c TADPila.c Evaluador.c -o Pract
 */
 
 #include <stdio.h>
-
-#include "Caja.h"
-#include "Super.h"
+// mis librerias .h
 #include "Presentacion.h"
 #include "TADColaDin.h"
+#include "SuperMercado.h"
+#include "Dibujar.h"
 
 
 // Esta funcion solo nos dira si el usuario quiere continuar en el menu o ya no
-boolean isContinue(){
+boolean isContinue()
+{
 	boolean isContinue = FALSE; // saber si quiere continuar en el menu 
 	int opc;
-	puts("\n Teclea la opcion que desees");
+	puts("\n \n \n Teclea la opcion que desees");
 	printf("Deseas regresar al menu de simulaciones ? \n 1-.SI \n 2-.NO \n");
 	scanf("%i",&opc);
 	// si quisi continuar se cambia a verdaero
@@ -39,6 +40,9 @@ int main()
 	int opc; 
 	// menu para las simulaciones
 	boolean continuar = TRUE; // sera verdadero hasta que el usuario ya no quiera
+
+	// variables para la simulacion del superMercado
+	superMerc super;
 	
 	while(continuar)
 	{
@@ -51,7 +55,10 @@ int main()
 		{
 			case 1:
 				// ejetutamos la simulacion del supermercado
-				printf("%s\n", "Supermercado");
+				// creamos nuestro superMercado con los datos que quiera el usuario
+				abrirSuper(&super);
+				// dibujamos el supermercado
+				dibujar(&super);
 			break;
 			
 			case 2:
