@@ -29,25 +29,26 @@ void dibujar(superMerc *super)
 	int colu=0; 	// columna de las cajeras
 	int x = 0; // multiplicador para la posicion x
 	BorrarPantalla(); // borramos pantalla
-	// cambiar el color de las letras para mejor presentacion en C
-	// buscar comandos del CMD	
-	// color a,b,c,d,e,f,g
 	system("mode con: cols=190 lines=50"); // Establecemos por defecto un tamaño de pantalla
-	setColor(DARKGREEN); // cambiamos el color a
+	setColor(DARKGREEN); // cambiamos el color VERDE
 	MoverCursor(30,0); // movemos el cursor
 	printf("NOMBRE DEL SUPERMERCADO: %s\n", super->nombreSuper); // impmimimos el nombre del SuperMercado (buscar como cambiar el tamaño de letra)
+	MoverCursor(30,2); // Bajamos en Y
+	printf("Tiempo de llegada clientes: %i ms \n", super->timeClie); // imprimimos el tiempo de llegada de los clientes
 	setColor(DARKYELLOW);// ponbemos el color amarillo
+
 	//Recorrer cada colu
-	for(colu=1; colu<=super->cajeras; colu++)
+	for(colu=0; colu<super->cajeras; colu++)
 	{	
 		//Mover el cursor, dibujar un * y esperar TIEMPO_BASE milisegundos
 		MoverCursor(x*17,8); // cada repeticion se mueve en x -> 10
 		EsperarMiliSeg(1000);
-		printf("|Caja #%d|",colu); // dibujamos las cajas
-		
+		printf("|Caja #%d|",colu+1); // dibujamos las cajas
+		MoverCursor(x*17,9); // ponemos debajo de la caja el tiempo de atencion
+		EsperarMiliSeg(1000);
+		printf("|time: %d ms|",super->cajas[colu].timeAte); // dibujamos las cajas
 		x++;
 	}
-
 }
 /*
 	void setColor(int valorColor)

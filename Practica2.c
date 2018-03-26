@@ -59,6 +59,8 @@ int main()
 				abrirSuper(&super);
 				// dibujamos el supermercado
 				dibujar(&super);
+				// empezamos a antender
+				empezar(&super);
 			break;
 			
 			case 2:
