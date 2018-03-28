@@ -37,3 +37,4 @@ enum colores{
 
 void dibujar(superMerc *super); // con el dibujamos las cajas de las cajeras dependiendo el numero cajas //
 void setColor(int valorColor);		// funcion para cambiar de color el texto que vayamos a imprimir en pantalla
+void printCola(int x, int y , cola *cola);

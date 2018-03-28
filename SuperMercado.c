@@ -67,7 +67,7 @@ void abrirSuper(superMerc *super)
 */
 boolean isOpen(superMerc *super)
 {
-	
+	// sin codigo(por ahora)
 }
 /*
 	boolean verificaCajas(superMerc *super); 
@@ -144,17 +144,146 @@ boolean isCajaEmpty(cola *cola)
 */
 void empezar(superMerc *super)
 {
-	int i; // contador
-   	
+	int numeroCaja; // numero de la caja a formarse
+	int aux; // auxiliar
+	int i,j; // contador
+	int mcd; // minimo comun divisor
+	unsigned int tiempoBase = 0; // tiempo 
+	unsigned int clientes = 0;
+   	elemento cliente;
    	// inicializamos las cajas
    	for(i = 0; i<super->cajeras; i++)
    	{
+   		// establecemos la disponibilidad por ahora de las cajeras
+   		super->cajas[i].isDispo=TRUE; 
    		// inicializamos las colas
    		Initialize(&super->cajas[i].clientes);
    	}
-   	// minimo debemos atender a 100 clientes antes de cerrar
-	while(super->atendidos <= 100)
+   	// Obtenemos el minimo comun divisor entre el mcd de los tiempos con 
+   	// la llegada del cliente
+   	mcd = MCD(super->cajas[0].timeAte,super->timeClie);
+   	/* Obtenemos el minimo comun divisor de los tiempos de atencion */
+   	for (i = 1; i < super->cajeras; i++)
+   		mcd = MCD(mcd,super->cajas[i].timeAte);
+   	
+   	// dividimos el tiempo de llegada entre mcd
+   	super->timeClie /= mcd; 
+	while(TRUE) // Bucle infinito
 	{
-		int numeroCaja = rand() % MAX_CAJAS; // numero aletario del 0 al 10
+		// esperamos los milisegundos
+		EsperarMiliSeg(mcd); // Tiempo base
+		if((tiempoBase%super->timeClie) == 0) // si ya transcurrio un multiplo del tiempo de llegada se forma un cliente en la fila
+		{
+			numeroCaja = rand() % super->cajeras; // numero aletario del 0 al 10
+			clientes++; // sumamos un cliente
+			cliente.n = clientes;
+			Queue(&super->cajas[numeroCaja].clientes,cliente);
+			aux = Size(&super->cajas[numeroCaja].clientes); // para la posicion en Y
+			MoverCursor((numeroCaja)*17,aux+12);
+			printf("%d",cliente.n);
+		}
+		// recorremos los cajeros
+		for(i=0; i<super->cajeras; i++)
+		{	// si es multiplo del tiempo de atencion o la caja esta disponible
+			if(tiempoBase%super->cajas[i].timeAte || (super->cajas[i].isDispo == TRUE))// saber si la cajera puede antender
+			{
+				// preguntamos si no esta vacia
+				if(!Empty(&super->cajas[i].clientes))
+				{
+					super->cajas[i].isDispo= FALSE;
+					aux = Size(&super->cajas[i].clientes); // obtenemos tam de la cola
+					cliente = Dequeue(& super->cajas[i].clientes);
+					MoverCursor(i*17,10); // posiciones x,y
+					printf("(-.-)->%d \n",cliente.n);
+					if(!Empty(&super->cajas[i].clientes)) 
+					{
+						// si no esta vacia
+						//reacomodamos las filas
+						for(j=0; j<aux; j++) // aux->Tamaño de la cola
+						{
+							MoverCursor(i*17,13+j); // reajustamos la fila j?
+							cliente = Element(&super->cajas[i].clientes,j+1);
+							printf("%d", cliente.n);
+						}
+						MoverCursor(i*10,12+aux);
+						printf("   %d  ",cliente.n);
+					}
+					else
+					{// si esta vacia 
+						MoverCursor(i*17,13);
+						printf("  %d   ",cliente.n); // borramos 
+					}
+				}
+				else // si no
+				{
+					if(super->cajas[i].isDispo==FALSE)
+					{
+						super->cajas[i].isDispo = TRUE; // esta disponible
+						printf("        ");	
+					}
+				}
+			}
+		}
+		// si ya se atendieron mas de 100 clientes podemos cerrar
+		if(clientes>=100)
+		{
+			setColor(RED); // cambiamos el color Rojo
+			MoverCursor(30,1); // movemos el cursor
+			printf("LA TIENDA %s CERRARA EN CUANTO LAS COLAS SE VACIEN ", super->nombreSuper); // avisar que cerrara
+			j = 0; // inicializamos denuevo el contador
+			for(i=0; i<super->cajeras; i++)
+			{
+				if(Empty(&super->cajas[i].clientes))
+					j++;// si esta vacia sumamos uno a j que cuenta nuestras cajas vacias
+			}
+			// si todas nuestras cajas estan vacias cerramos
+			if(j==super->cajeras)
+			{
+				BorrarPantalla(); // borramos la pantalla
+				setColor(DARKMAGENTA); // cambiamos de color
+				MoverCursor(90,10);
+				printf("%s", "LA TIENDA HA CERRADO SUS PUERTAS");
+				// destruimos colas
+				for(i=0; i<super->cajeras; i++)
+					Destroy(&super->cajas[i].clientes);
+				system("color 07"); // ponemos colores predeterminados
+				break;
+			}
+
+		}
+		tiempoBase++; // sumamos mi tiempo base
 	}
+}
+/*
+	int MCD (int menor , int mayor)
+	Descripción: Algoritmo para sacar el minimo comun divisor usando algoritmo de euclides
+	Recibe:  int menor , int mayor donde mayor>menor
+	Devuelve: int
+*/
+int MCDEuclides(int menor , int mayor)
+{
+	int residuo = mayor%menor;
+	if(residuo==0)
+		return menor; // si la division es exacta , encontramos el MCD
+	else // si no mandamos el residuo y volvemos a divir hasta que el residuo sea 0
+		return MCDEuclides(residuo,menor); // recursiva
+}
+/*
+	int MCD (int num1 , int num2)
+	Descripción: Algoritmo para sacar el minimo comun divisor usando algoritmo de euclides
+	Recibe:  int numero , int numero2
+	Devuelve: int
+*/
+int MCD (int num1 , int num2)
+{
+	int aux_num; // auxiliar
+	// acomodamos los numeros de mayor a menor
+	if(num1>num2) // saber si num1 es mayor
+	{
+		aux_num=num1; // se guarda valor en auxiliar
+		num1=num2; // se iguala a num2 
+		num2=aux_num; // y se cambia el valor por el auxiliar
+	}
+	// num 1 es el menor y num2 es el mayor
+	return MCDEuclides(num1,num2); // realizamos MCD con el algoritmo de euclides
 }

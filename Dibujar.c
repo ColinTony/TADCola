@@ -42,10 +42,10 @@ void dibujar(superMerc *super)
 	{	
 		//Mover el cursor, dibujar un * y esperar TIEMPO_BASE milisegundos
 		MoverCursor(x*17,8); // cada repeticion se mueve en x -> 10
-		EsperarMiliSeg(1000);
+		EsperarMiliSeg(500);
 		printf("|Caja #%d|",colu+1); // dibujamos las cajas
 		MoverCursor(x*17,9); // ponemos debajo de la caja el tiempo de atencion
-		EsperarMiliSeg(1000);
+		EsperarMiliSeg(250);
 		printf("|time: %d ms|",super->cajas[colu].timeAte); // dibujamos las cajas
 		x++;
 	}
