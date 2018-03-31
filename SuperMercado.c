@@ -148,14 +148,14 @@ void empezar(superMerc *super)
 	int aux; // auxiliar
 	int i,j; // contador
 	int mcd; // minimo comun divisor
-	unsigned int tiempoBase = 0; // tiempo 
+	unsigned int tiempo = 0; // tiempo 
 	unsigned int clientes = 0;
    	elemento cliente;
    	// inicializamos las cajas
    	for(i = 0; i<super->cajeras; i++)
    	{
    		// establecemos la disponibilidad por ahora de las cajeras
-   		super->cajas[i].isDispo=TRUE; 
+   		super->cajas[i].isDispo=FALSE; 
    		// inicializamos las colas
    		Initialize(&super->cajas[i].clientes);
    	}
@@ -166,66 +166,89 @@ void empezar(superMerc *super)
    	for (i = 1; i < super->cajeras; i++)
    		mcd = MCD(mcd,super->cajas[i].timeAte);
    	
+   	for(i = 0; i<super->cajeras; i++)
+   		super->cajas[i].timeAte /= mcd;
+
    	// dividimos el tiempo de llegada entre mcd
    	super->timeClie /= mcd; 
+
+   	for(i = 0; i<super->cajeras; i++)
+   	{
+   		MoverCursor(120,5*i);
+   		printf("MCD : %d", mcd);
+   		MoverCursor(150,5*i);
+   		printf("TIEMPO ATENCION %d ", super->cajas[i].timeAte);
+
+   	}
 	while(TRUE) // Bucle infinito
 	{
 		// esperamos los milisegundos
 		EsperarMiliSeg(mcd); // Tiempo base
-		if((tiempoBase%super->timeClie) == 0) // si ya transcurrio un multiplo del tiempo de llegada se forma un cliente en la fila
+		tiempo++;
+		
+		// si ya transcurrio un multiplo del tiempo de llegada del clientes se forma un cliente en la fila
+		if((tiempo % super->timeClie) == 0) 
 		{
-			numeroCaja = rand() % super->cajeras; // numero aletario del 0 al 10
 			clientes++; // sumamos un cliente
-			cliente.n = clientes;
+			cliente.n = clientes;// numero de cliente
+			numeroCaja = rand() % super->cajeras; // numero aletario del 0 al num de cajeras
 			Queue(&super->cajas[numeroCaja].clientes,cliente);
 			aux = Size(&super->cajas[numeroCaja].clientes); // para la posicion en Y
 			MoverCursor((numeroCaja)*17,aux+12);
 			printf("%d",cliente.n);
 		}
-		// recorremos los cajeros
-		for(i=0; i<super->cajeras; i++)
-		{	// si es multiplo del tiempo de atencion o la caja esta disponible
-			if(tiempoBase%super->cajas[i].timeAte || (super->cajas[i].isDispo == TRUE))// saber si la cajera puede antender
+
+		// Recorremos los cajeros con sus tiempos de atencion
+		for(i = 0; i<super->cajeras; i++)
+		{
+			// si el tiempo de es multiplo del de atencion , atender cliente
+			if(tiempo % super->cajas[i].timeAte == 0)
 			{
-				// preguntamos si no esta vacia
+				// si hay alguien en la fila
 				if(!Empty(&super->cajas[i].clientes))
 				{
-					super->cajas[i].isDispo= FALSE;
-					aux = Size(&super->cajas[i].clientes); // obtenemos tam de la cola
-					cliente = Dequeue(& super->cajas[i].clientes);
-					MoverCursor(i*17,10); // posiciones x,y
-					printf("(-.-)->%d \n",cliente.n);
-					if(!Empty(&super->cajas[i].clientes)) 
+					// debemos atender al cliente
+					super->cajas[i].isDispo = FALSE; // se pone a antender
+					// pasamos la cola y desencolamos al primero de la fila
+					cliente = Dequeue(&super->cajas[i].clientes);
+					setColor(DARKCYAN); // cambiamos color para distinguir al atendido
+					MoverCursor(i*17,10);
+					printf("<-(n.n)->%d", cliente.n);
+					aux = Size(&super->cajas[i].clientes);
+					// preguntamos de nuevo si hay un cliente en la fila
+					if(!Empty(&super->cajas[i].clientes))
 					{
-						// si no esta vacia
-						//reacomodamos las filas
-						for(j=0; j<aux; j++) // aux->Tamaño de la cola
+						for(j=0; j<aux; j++) // recorremos el tamaño de la fila
 						{
-							MoverCursor(i*17,13+j); // reajustamos la fila j?
+							// Reacomodar la fila
+							MoverCursor(150,15);
 							cliente = Element(&super->cajas[i].clientes,j+1);
+							MoverCursor(i*17,12+j);
 							printf("%d", cliente.n);
 						}
-						MoverCursor(i*10,12+aux);
-						printf("   %d  ",cliente.n);
 					}
 					else
-					{// si esta vacia 
-						MoverCursor(i*17,13);
-						printf("  %d   ",cliente.n); // borramos 
+					{
+						// si no hay clientes despues de atender la fila
+						super->cajas[i].isDispo = TRUE;
+						MoverCursor(i*17,12+aux);
+						printf("     ");
 					}
 				}
-				else // si no
+				else // la caja esta libre
 				{
-					if(super->cajas[i].isDispo==FALSE)
+					if(!super->cajas[i].isDispo) // si no esta disponible
 					{
-						super->cajas[i].isDispo = TRUE; // esta disponible
-						printf("        ");	
+						// la ponemos disponible
+						super->cajas[i].isDispo = TRUE;
+						MoverCursor(i*17,10);
+						printf("      "); // borramos
 					}
 				}
 			}
 		}
 		// si ya se atendieron mas de 100 clientes podemos cerrar
-		if(clientes>=100)
+		if(clientes >= 100)
 		{
 			setColor(RED); // cambiamos el color Rojo
 			MoverCursor(30,1); // movemos el cursor
@@ -251,7 +274,50 @@ void empezar(superMerc *super)
 			}
 
 		}
-		tiempoBase++; // sumamos mi tiempo base
+		
+		/*// recorremos los cajeros
+		for(i=0; i<super->cajeras; i++)
+		{	// si es multiplo del tiempo de atencion o la caja esta disponible
+			if(tiempo%super->cajas[i].timeAte || (super->cajas[i].isDispo == TRUE))// saber si la cajera puede antender
+			{
+				// preguntamos si no esta vacia
+				if(!Empty(&super->cajas[i].clientes))
+				{
+					super->cajas[i].isDispo= FALSE;
+					aux = Size(&super->cajas[i].clientes); // obtenemos tam de la cola
+					cliente = Dequeue(&super->cajas[i].clientes);
+					MoverCursor(i*17,10); // posiciones x,y
+					printf("(-.-)->%d \n",cliente.n);
+					if(!Empty(&super->cajas[i].clientes)) 
+					{
+						// si no esta vacia
+						//reacomodamos las filas
+						for(j=0; j<aux; j++) // aux->Tamaño de la cola
+						{
+							MoverCursor(i*17,13+j); // reajustamos la fila j?
+							cliente = Element(&super->cajas[i].clientes,j);
+							printf("%d", cliente.n);
+						}
+						MoverCursor(i*10,12+aux);
+						printf("     ",cliente.n);
+					}
+					else
+					{// si esta vacia 
+						MoverCursor(i*17,13);
+						printf("     ",cliente.n);
+					}
+				}
+				else // si no
+				{
+					if(super->cajas[i].isDispo==FALSE)
+					{
+						super->cajas[i].isDispo = TRUE; // esta disponible
+						printf("        ");	
+					}
+				}
+			}
+		}*/
+		
 	}
 }
 /*
