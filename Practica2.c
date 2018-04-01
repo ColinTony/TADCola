@@ -9,7 +9,7 @@ implementamos un programa que realice las 3 sumulaciones de la practica (Superme
 OBSERVACIONES: Utilizamos una Estructura de datos cola de forma dinamica , la cual
 nos ayudara para la realizacion de las diferentes simulaciones.
 
-COMPILACIÓN : usamos el comando gcc Practica01.c TADPila.c Evaluador.c -o Practica01.c ó ejecutar el .bat
+COMPILACIÓN : usamos el comando gcc Practica2.c Dibujar.c Presentacion.c SuperMercado.c Proceso.c TADColaDin.c -o Practica2	ó ejecutar el compilador.bat
 */
 
 #include <stdio.h>
@@ -18,6 +18,7 @@ COMPILACIÓN : usamos el comando gcc Practica01.c TADPila.c Evaluador.c -o Pract
 #include "TADColaDin.h"
 #include "SuperMercado.h"
 #include "Dibujar.h"
+#include "Proceso.h"
 
 
 // Esta funcion solo nos dira si el usuario quiere continuar en el menu o ya no
@@ -56,6 +57,7 @@ int main()
 			case 1:
 				// ejetutamos la simulacion del supermercado
 				// creamos nuestro superMercado con los datos que quiera el usuario
+				printf("%s\n", "SIMULACION SUPERMERCADO");
 				abrirSuper(&super);
 				// dibujamos el supermercado
 				dibujar(&super);
@@ -65,12 +67,13 @@ int main()
 			
 			case 2:
 				// Ejetucamos la simulacion de Procesos S.O
-				printf("%s\n", "Procesos S.O");
+				printf("%s\n", "SIMULACION PROCESOS S.O");
+				Abrir_procesos();//llamada de la funcion que inicia el proceso de simulacion de procesos 
 			break;
 
 			case 3:
 				// Ejecutamos banco
-				printf("%s\n", "Banco");
+				printf("%s\n", "SIMULACION BANCO");
 			break;
 			
 			default:

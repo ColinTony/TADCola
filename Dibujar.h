@@ -8,12 +8,12 @@
 
 // Descripcion los codigos para los colores
     /*
-    * 0x000 son punteros para los valores de los colores
-    *FOREGROUND_BLUE 0x0001  color AZUL.
-	*FOREGROUND_GREEN 0x0002 color VERDE.
-	*FOREGROUND_RED 0x0004	color ROJO.
-	*FOREGROUND_INTENSITY 0x0008 intensidad de color.
-	BACKGROUND_BLUE 0x0010	ponemos un fondo azul
+    * 0x000 son punteros ? para los valores de los colores
+    * FOREGROUND_BLUE 0x0001  color AZUL.
+	* FOREGROUND_GREEN 0x0002 color VERDE.
+	* FOREGROUND_RED 0x0004	color ROJO.
+	* FOREGROUND_INTENSITY 0x0008 intensidad de color.
+	* BACKGROUND_BLUE 0x0010	ponemos un fondo azul
 	* informacion obtenida de la documentacion de Windows https://docs.microsoft.com/en-us/windows/console/char-info-str
     */
 enum colores{

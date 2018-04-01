@@ -3,7 +3,7 @@
 	AUTOR: Colin Heredia Luis Antonio
 	VERSIÓN: 1.0
 
-	DESCRIPCIÓN: Se declaran las funcinones para el manejo del super mercado.
+	DESCRIPCIÓN: Se definen las funciones y estructuras para el super merccado
 */
 #define MAX_CAJAS 10
 
