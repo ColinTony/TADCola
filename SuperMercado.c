@@ -195,7 +195,7 @@ void empezar(superMerc *super)
 		for(i = 0; i<super->cajeras; i++)
 		{
 			// si el tiempo de es multiplo del de atencion , atender cliente
-			MoverCursor(30,3);
+			MoverCursor(30,1);
 			printf("Clientes atendidos : %d " , clieAte);
 			if(tiempo % super->cajas[i].timeAte == 0 || (super->cajas[i].isDispo == TRUE))
 			{
@@ -205,42 +205,37 @@ void empezar(superMerc *super)
 					// debemos atender al cliente
 					super->cajas[i].isDispo = FALSE; // se pone a antender
 					// pasamos la cola y desencolamos al primero de la fila
+					aux = Size(&super->cajas[i].clientes); // obtenemos tam de cola
 					cliente = Dequeue(&super->cajas[i].clientes);
 					setColor(DARKCYAN); // cambiamos color para distinguir al atendido
 					MoverCursor(i*17,10);
 					printf("<-(n.n)->%d", cliente.n); // imprimimos al cliente
-					aux = Size(&super->cajas[i].clientes);
 					clieAte++;
+					MoverCursor(i*17,13);
+					printf("           ");
 					// preguntamos de nuevo si hay un cliente en la fila
 					if(!Empty(&super->cajas[i].clientes))
 					{
-						for(j=0; j<aux; j++) // recorremos el tamaño de la fila
+						// aux - 1 porque hay u elemento menos en fila
+						for(j=0; j<(aux-1); j++) // recorremos el tamaño de la fila
 						{
 							// Reacomodar la fila
-							MoverCursor(150,15);
 							cliente = Element(&super->cajas[i].clientes,j+1);
-							MoverCursor(i*17,12+j);
+							MoverCursor(i*17,13+j);
 							printf("%d", cliente.n);
 						}
-						MoverCursor(i*17,13+aux);
+						MoverCursor(i*17,12+aux);
 						printf("             "); // borramos
-					}
-					else
-					{
-						// si no hay clientes despues de atender la fila
-						super->cajas[i].isDispo = TRUE;
-						MoverCursor(i*17,13);
-						printf("              "); // borramos al cliente
 					}
 				}
 				else // la caja esta libre
 				{
-					if(!super->cajas[i].isDispo) // si no esta disponible
+					if(super->cajas[i].isDispo == FALSE) // si no esta disponible
 					{
 						// la ponemos disponible
-						super->cajas[i].isDispo = TRUE;
-						MoverCursor((i*17),12);
-						printf("             "); // borramos
+						super->cajas[i].isDispo = TRUE;	
+						MoverCursor((i*17),10);
+						printf("            "); // borramos
 					}
 				}
 			}
@@ -249,7 +244,7 @@ void empezar(superMerc *super)
 		if(clieAte >= 100)
 		{
 			setColor(RED); // cambiamos el color Rojo
-			MoverCursor(30,1); // movemos el cursor
+			MoverCursor(30,3); // movemos el cursor
 			printf("LA TIENDA %s CERRARA EN CUANTO LAS COLAS SE VACIEN ", super->nombreSuper); // avisar que cerrara
 			j = 0; // inicializamos denuevo el contador
 			for(i=0; i<super->cajeras; i++)
