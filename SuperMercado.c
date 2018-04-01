@@ -24,7 +24,6 @@ void abrirSuper(superMerc *super)
 	int cajas = 0;
 	int timeClientes=0;
 	super->cajeras = 0; // ponemos las cajeras en 0
-	super->open = TRUE; // abrimos la tienda
 
 	// pedimos al usuario que ingrese el nombre del SuperMercado 
 	puts("Ingrese el nombre del SuperMercado (sin espacios): ");
@@ -58,16 +57,6 @@ void abrirSuper(superMerc *super)
 	}
 	super->timeClie = timeClientes; // asignamos valor de llegada de clientes
 	
-}
-/*
-	boolean isOpen(superMerc *super); 
-	Descripción: Revisa si aun pueden llegar clientes ya que esta abierto
-	Recibe:  super
-	Devuelve: boolean.
-*/
-boolean isOpen(superMerc *super)
-{
-	// sin codigo(por ahora)
 }
 /*
 	boolean verificaCajas(superMerc *super); 
@@ -127,16 +116,6 @@ boolean isMultiplo(int num)
 	return isMultiplo;
 }
 /*
-	boolean isCajaEmpty(cola *cola)
-	Descripción: comprueba si esta vacia la cola de clientes
-	Recibe:  cola
-	Devuelve: boolean.
-*/
-boolean isCajaEmpty(cola *cola)
-{
-	return Empty(cola);
-}
-/*
 	void empezar(superMerc *super)
 	Descripción: Inicia para recibir clientes en las colas y empieza atender clientes
 	Recibe:  super
@@ -150,7 +129,7 @@ void empezar(superMerc *super)
 	int mcd; // minimo comun divisor
 	unsigned int tiempo = 0; // tiempo 
 	unsigned int clientes = 0; // clientes llegados
-	unsigned int clieAte = 0;
+	super->atendidos = 0;
    	elemento cliente;
    	// inicializamos las cajas
    	for(i = 0; i<super->cajeras; i++)
@@ -196,7 +175,7 @@ void empezar(superMerc *super)
 		{
 			// si el tiempo de es multiplo del de atencion , atender cliente
 			MoverCursor(30,1);
-			printf("Clientes atendidos : %d " , clieAte);
+			printf("Clientes atendidos : %d " , super->atendidos);
 			if(tiempo % super->cajas[i].timeAte == 0 || (super->cajas[i].isDispo == TRUE))
 			{
 				// si hay alguien en la fila
@@ -210,7 +189,7 @@ void empezar(superMerc *super)
 					setColor(DARKCYAN); // cambiamos color para distinguir al atendido
 					MoverCursor(i*17,10);
 					printf("<-(n.n)->%d", cliente.n); // imprimimos al cliente
-					clieAte++;
+					super->atendidos++;
 					MoverCursor(i*17,13);
 					printf("           ");
 					// preguntamos de nuevo si hay un cliente en la fila
@@ -241,7 +220,7 @@ void empezar(superMerc *super)
 			}
 		}
 		// si ya se atendieron mas de 100 clientes podemos cerrar
-		if(clieAte >= 100)
+		if(super->atendidos >= 100)
 		{
 			setColor(RED); // cambiamos el color Rojo
 			MoverCursor(30,3); // movemos el cursor
