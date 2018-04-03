@@ -35,6 +35,6 @@ enum colores{
     WHITE             = 0x0008 | 0x0004 | 0x0002 | 0x0001,
  }colores;
 
-void dibujar(superMerc *super); // con el dibujamos las cajas de las cajeras dependiendo el numero cajas //
+void dibujarSuper(superMerc *super); // con el dibujamos las cajas de las cajeras dependiendo el numero cajas //
+void dibujarBanco(banco *banco);     // dibuja las cajas del banco
 void setColor(int valorColor);		// funcion para cambiar de color el texto que vayamos a imprimir en pantalla
-void printCola(int x, int y , cola *cola);

@@ -10,7 +10,6 @@
 typedef struct caja
 {
 	int timeAte; 		// tiempo de atencion de la cajera
-	boolean isVacia; 	// saber si su cola esta vacia
 	boolean isDispo;	// saber si no esta atendiendo a nadie
 	cola clientes; 		// cola clientes formados en la cola
 

@@ -10,6 +10,7 @@
 #include "Presentacion.h"
 #include "TADColaDin.h"
 #include "SuperMercado.h"
+#include "Banco.h"
 #include "Dibujar.h"
 
 
@@ -27,7 +28,8 @@ void abrirSuper(superMerc *super)
 
 	// pedimos al usuario que ingrese el nombre del SuperMercado 
 	puts("Ingrese el nombre del SuperMercado (sin espacios): ");
-	scanf("%s",super->nombreSuper); // gets(super->nombreSuper); No jalo
+	fflush(stdin); // Borrar el buffer
+	gets(super->nombreSuper);
 	strupr(super->nombreSuper); // pasamos todo a Mayusculas
 	puts("Ingresa el numero de cajeras que atenderan : ");
 	scanf("%d", &cajas);
@@ -78,7 +80,6 @@ boolean verificaCajas(superMerc *super)
 		// recorremos el arreglo de las cajas
 		for(i = 0; i<super->cajeras; i++)
 		{
-			super->cajas[i].isVacia = TRUE; // la cola al iniciarce esta vacia
 			printf("\n Ingresa el tiempo de atencion de la caja %i (MS) \n", i+1);
 			scanf("%d",&tiempoAte);
 			if(!isMultiplo(tiempoAte)) // verificar que sea multiplo de 10

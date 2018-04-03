@@ -17,6 +17,7 @@ COMPILACIÓN : usamos el comando gcc Practica2.c Dibujar.c Presentacion.c SuperM
 #include "Presentacion.h"
 #include "TADColaDin.h"
 #include "SuperMercado.h"
+#include "Banco.h"
 #include "Dibujar.h"
 #include "Proceso.h"
 
@@ -60,7 +61,7 @@ int main()
 				printf("%s\n", "SIMULACION SUPERMERCADO");
 				abrirSuper(&super);
 				// dibujamos el supermercado
-				dibujar(&super);
+				dibujarSuper(&super);
 				// empezamos a antender
 				empezar(&super);
 			break;

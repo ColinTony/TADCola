@@ -3,7 +3,7 @@
 	AUTOR: Colin Heredia Luis Antonio
 	VERSIÓN: 1.0
 
-	DESCRIPCIÓN: Se define la funcion para dibujar las cajas de las cajeras
+	DESCRIPCIÓN: Se declran la funcion para dibujar las cajas de las cajeras
 */
 
 
@@ -11,19 +11,21 @@
 #include <Windows.h> // para poder obtener las medidas de la pantalla
 #include "Presentacion.h"
 #include "TADColaDin.h"
+#include "Banco.h"
 #include "SuperMercado.h"
 #include "Dibujar.h"
 
 
 #define ANCHO  9
 #define ALTO   5
+
 /*
 	void dibujar(super *super)
 	Descripción: Realiza Dibuja las cajeras que pidio el usuario y el nombre del super mercado
 	Recibe:  super
 	Devuelve: void.
 */
-void dibujar(superMerc *super)
+void dibujarSuper(superMerc *super)
 {
 	// debemos tambien mostrar si esta cerrado o abierto el mercado.
 	int colu=0; 	// columna de las cajeras
@@ -50,6 +52,7 @@ void dibujar(superMerc *super)
 		x++;
 	}
 }
+
 /*
 	void setColor(int valorColor)
 	Descripción: Realiza Dibuja las cajeras que pidio el usuario y el nombre del super mercado
@@ -77,3 +80,14 @@ void setColor(int valorColor)
 	* informacion obtenida de la documentacion de Windows https://docs.microsoft.com/en-us/windows/console/char-info-str
     */
 }
+
+/*
+	void dibujarBanco(banco *banco)
+	Descripción: Realiza Dibuja las cajeras que pidio el usuario
+	Recibe:  estructura banco
+	Devuelve: void.
+*/
+//void dibujarBanco(banco *banco)
+//{
+
+//}

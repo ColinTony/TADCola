@@ -1,3 +1,4 @@
+
 // Autor : Dayron avila ramirez
 
 #include "proceso.h"
@@ -7,7 +8,6 @@
 #include "TADColaDin.h"
 #include <windows.h>
 #include "presentacion.h"
-#include "Dibujar.c"
 
 /*
 	void Abrir_procesos();
