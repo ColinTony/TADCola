@@ -152,6 +152,8 @@ void initBanco(banco *banco)
 		EsperarMiliSeg(mcd); // Tiempo base
 		tiempo++;
 
+		// Formacion de clientes....
+
 		if(tiempo%banco->timePrefe == 0) // se forma un nuevo cliente preferente a la fila
 		{
 			clie++; // sumamos un cleinte que llego
@@ -182,6 +184,15 @@ void initBanco(banco *banco)
 			printf("C->%d",clie);
 		}
 		
+		// Atencion de clientes
+		for(i = 0; i<banco->numeroCajas; i++) // recorremos las cajas
+		{
+			// si no esta vacia la cola de preferentes
+			if(!Empty(&banco->colaPrefe))
+			{
+
+			}
+		}
 
 	}
 }
