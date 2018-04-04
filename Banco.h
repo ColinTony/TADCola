@@ -18,6 +18,7 @@ typedef struct cajaBank
 // estructura del banco y sus tres colas
 typedef struct banco
 {
+	char nombreBanco[30];
 	// colas del banco
 	cola colaClie;			// cola de clientes del banco
 	cola colaUsuario;		// cola de usuarios del banco
@@ -26,7 +27,8 @@ typedef struct banco
 	int timeClie;			// tiempo de llegada de los clientes
 	int timeUsuario;		// tiempo de llegada de los usuarios del banco
 	int timePrefe;			// tiempo de llegada de los clientes preferentes 
-	int numeroCajas; 			// numero de cajas establecidas por el usuario
+	int numeroCajas; 		// numero de cajas establecidas por el usuario
+	int cliente;			// numero del cliente
 
 	cajaBank cajas[MAX_CAJAS]; 	// cajas creadas por el usuario
 
@@ -34,3 +36,4 @@ typedef struct banco
 
 void abrirBanco(banco *banco);		// inicializa las variables y dibuja el banco
 void pedirTiempos(banco *banco);	// pedimos los tiempos de cada caja
+void initBanco(banco *banco);		// iniciamos nuestra simulacion

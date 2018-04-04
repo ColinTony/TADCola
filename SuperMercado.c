@@ -132,6 +132,7 @@ void empezar(superMerc *super)
 	unsigned int clientes = 0; // clientes llegados
 	super->atendidos = 0;
    	elemento cliente;
+   	
    	// inicializamos las cajas
    	for(i = 0; i<super->cajeras; i++)
    	{
@@ -263,6 +264,7 @@ int MCDEuclides(int menor , int mayor)
 	else // si no mandamos el residuo y volvemos a divir hasta que el residuo sea 0
 		return MCDEuclides(residuo,menor); // recursiva
 }
+
 /*
 	int MCD (int num1 , int num2)
 	Descripción: Algoritmo para sacar el minimo comun divisor usando algoritmo de euclides

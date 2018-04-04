@@ -45,7 +45,9 @@ int main()
 
 	// variables para la simulacion del superMercado
 	superMerc super;
-	
+	// creamos un banco
+	banco banco;
+
 	while(continuar)
 	{
 		// Vemos que simulacion ejecutar
@@ -75,6 +77,7 @@ int main()
 			case 3:
 				// Ejecutamos banco
 				printf("%s\n", "SIMULACION BANCO");
+				abrirBanco(&banco);
 			break;
 			
 			default:

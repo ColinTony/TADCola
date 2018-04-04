@@ -34,7 +34,7 @@ void dibujarSuper(superMerc *super)
 	system("mode con: cols=190 lines=50"); // Establecemos por defecto un tamaño de pantalla
 	setColor(DARKGREEN); // cambiamos el color VERDE
 	MoverCursor(30,0); // movemos el cursor
-	printf("NOMBRE DEL SUPERMERCADO: %s\n", super->nombreSuper); // impmimimos el nombre del SuperMercado (buscar como cambiar el tamaño de letra)
+	printf("NOMBRE DEL SUPERMERCADO: %s\n", super->nombreSuper);
 	MoverCursor(30,2); // Bajamos en Y
 	printf("Tiempo de llegada clientes: %i ms \n", super->timeClie); // imprimimos el tiempo de llegada de los clientes
 	setColor(DARKYELLOW);// ponbemos el color amarillo
@@ -49,6 +49,46 @@ void dibujarSuper(superMerc *super)
 		MoverCursor(x*17,9); // ponemos debajo de la caja el tiempo de atencion
 		EsperarMiliSeg(250);
 		printf("|time: %d ms|",super->cajas[colu].timeAte); // dibujamos las cajas
+		x++;
+	}
+}
+
+/*
+	void dibujarBanco(banco *banco)
+	Descripción: Realiza Dibuja las cajeras que pidio el usuario
+	Recibe:  estructura banco
+	Devuelve: void.
+*/
+void dibujarBanco(banco *banco)
+{
+	int colu=0; 		// columna de las cajeras
+	int x = 0; 			// multiplicador para la posicion x
+	BorrarPantalla(); // borramos pantalla
+	system("mode con: cols=190 lines=50"); // Establecemos por defecto un tamaño de pantalla
+	setColor(MAGENTA); // cambiamos el color VERDE
+	MoverCursor(35,0); // movemos el cursor
+	printf("NOMBRE DEL BANCO: %s", banco->nombreBanco);
+	// imprimimos las llegadas de clientes
+	setColor(DARKGREEN); // cambiamos el color VERDE
+	MoverCursor(30,2);
+	printf("Tiempo de llegada clientes: %i ms", banco->timeClie); // imprimimos el tiempo de llegada de los clientes
+	setColor(RED);
+	MoverCursor(30,3); // Bajamos en Y
+	printf("Tiempo de llegada usuarios: %i ms", banco->timeUsuario); // imprimimos el tiempo de llegada de los usuarios
+	setColor(YELLOW); // color amarillo
+	MoverCursor(30,4); // Bajamos en Y
+	printf("Tiempo de llegada clientes preferentes: %i ms", banco->timePrefe); // imprimimos el tiempo de llegada de los clientes preferentes
+	setColor(DARKGRAY); // color 
+	//Recorrer cada colu
+	for(colu=0; colu<banco->numeroCajas; colu++)
+	{	
+		//Mover el cursor, dibujar un * y esperar TIEMPO_BASE milisegundos
+		MoverCursor(x*17,8); // cada repeticion se mueve en x -> 10
+		EsperarMiliSeg(500);
+		printf("|Caja #%d|",colu+1); // dibujamos las cajas
+		MoverCursor(x*17,9); // ponemos debajo de la caja el tiempo de atencion
+		EsperarMiliSeg(250);
+		printf("|time: %d ms|",banco->cajas[colu].tiempoAte); // dibujamos las cajas
 		x++;
 	}
 }
@@ -80,14 +120,3 @@ void setColor(int valorColor)
 	* informacion obtenida de la documentacion de Windows https://docs.microsoft.com/en-us/windows/console/char-info-str
     */
 }
-
-/*
-	void dibujarBanco(banco *banco)
-	Descripción: Realiza Dibuja las cajeras que pidio el usuario
-	Recibe:  estructura banco
-	Devuelve: void.
-*/
-//void dibujarBanco(banco *banco)
-//{
-
-//}
