@@ -24,7 +24,6 @@
 void abrirBanco(banco *banco)
 {
 	int i;
-	banco->cliente=0; 
 	// inicializar mis variables del banco y dibujar
 	Initialize(&banco->colaClie); 			// cola clientes
 	Initialize(&banco->colaUsuario);		// cola usuario
@@ -57,10 +56,10 @@ void pedirTiempos(banco *banco)
 	puts("Ingrese el numero de cajeros que se atenderan");
 	scanf("%d",&banco->numeroCajas); // pedimos el numero de cajas
 
-	if(banco->numeroCajas > MAX_CAJAS) // si es mayor a 10
+	if(banco->numeroCajas > MAX_CAJAS || banco->numeroCajas <= 0) // si es mayor a 10
 	{
 		// si es mayor a 10
-		 puts("ERROR , NO TENEMOS TANTAS CAJAS");
+		 puts("ERROR: NO PODEMOS EMPEZAR CON ESAS CAJAS");
 		 exit(1);
 	}
 	// recorremos las cajas
@@ -109,15 +108,17 @@ void initBanco(banco *banco)
 	int mcd; 	 // minimo comun divisor
 	int auxMcd;  // auxiliaar del MCD
 	int aux2Mcd; // auxiliar mcd
+	int turnosPrefe;
+	int turnosClie;
 	unsigned int tiempo = 0; // tiempo
 	unsigned int clie = 0; // clientes llegados
 
-	elemento cliente;	// elemento para ingresar en la cola
+	elemento element;	// elemento para ingresar en la cola
 
 	// tiempos de llegada del cliente del banco y los tiempos de atencion
-	mcd = MCD(banco->cajas[0].tiempoAte,banco->timeClie); // primero con el tiempo de atencion del arreglo en pos 0 y tiempo de llegada cliente
+	mcd =  	 MCD(banco->cajas[0].tiempoAte,banco->timeClie); // primero con el tiempo de atencion del arreglo en pos 0 y tiempo de llegada cliente
 	auxMcd = MCD(banco->cajas[0].tiempoAte,banco->timeUsuario); // primero con el tiempo de atencion del arreglo en pos 0 y tiempo de llegada usuario
-	auxMcd = MCD(banco->cajas[0].tiempoAte,banco->timeUsuario); // primero con el tiempo de atencion del arreglo en pos 0 y tiempo de llegada clie Pref.
+	auxMcd = MCD(banco->cajas[0].tiempoAte,banco->timePrefe); // primero con el tiempo de atencion del arreglo en pos 0 y tiempo de llegada clie Pref.
 	// sacamos el mcd entre todos los tiempos de antencion
 	for(i=1; i<banco->numeroCajas; i++)
 	{
@@ -129,23 +130,58 @@ void initBanco(banco *banco)
 	// sacamos el mcd entre los auxiliares mcd y el mcd
 	mcd = MCD(mcd,auxMcd);
 	mcd = MCD(mcd,aux2Mcd);
+	
 
 	// dividimos el mcd entre los tiempos de atencion de las cajas
 	for(i = 0; i<banco->numeroCajas; i++)
-		banco->cajas[i].tiempoAte /= mcd; // Ahora los tiempos de atencion ya son multiplos del tiempo de espera
+		banco->cajas[i].tiempoAte /= mcd; 
+	// ahora todos son multiplos	
+	banco->timeClie /= mcd;
+	banco->timeUsuario /= mcd;
+	banco->timePrefe /= mcd;
 
+	/*
+	MoverCursor(50,50);
+	printf("MCD final %d ", mcd);
+	for(i=0; i<banco->numeroCajas; i++)
+		printf("Tiempo caja : %d" , banco->cajas[i].tiempoAte);
+	*/
 	while(TRUE) // bucle infinito
 	{
 		// esperamos los milisegundos
 		EsperarMiliSeg(mcd); // Tiempo base
 		tiempo++;
+
 		if(tiempo%banco->timePrefe == 0) // se forma un nuevo cliente preferente a la fila
 		{
-			clie++;
-			element.n = cliente;
+			clie++; // sumamos un cleinte que llego
+			element.n = clie;
 			Queue(&banco->colaPrefe,element); // encolamos elemento
-			MoverCursor(40,SizeCola(&filas[0])+5);
-			printf("%d",cliente);
+			aux = Size(&banco->colaPrefe);
+			MoverCursor(17,aux+12);
+			printf("P->%d",clie);
 		}
+
+		if(tiempo%banco->timeUsuario == 0) // se forma un nuevo usuario a la fila
+		{
+			clie++; // sumamos un cleinte que llego
+			element.n = clie;
+			Queue(&banco->colaUsuario,element); // encolamos elemento
+			aux = Size(&banco->colaUsuario);
+			MoverCursor(17*2,aux+12);
+			printf("U->%d",clie);
+		}
+
+		if(tiempo%banco->timeClie == 0) // se forma un nuevo cliente a la fila
+		{
+			clie++; // sumamos un cleinte que llego
+			element.n = clie;
+			Queue(&banco->colaClie,element); // encolamos elemento
+			aux = Size(&banco->colaClie);
+			MoverCursor(17*3,aux+12);
+			printf("C->%d",clie);
+		}
+		
+
 	}
 }

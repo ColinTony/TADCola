@@ -28,7 +28,6 @@ typedef struct banco
 	int timeUsuario;		// tiempo de llegada de los usuarios del banco
 	int timePrefe;			// tiempo de llegada de los clientes preferentes 
 	int numeroCajas; 		// numero de cajas establecidas por el usuario
-	int cliente;			// numero del cliente
 
 	cajaBank cajas[MAX_CAJAS]; 	// cajas creadas por el usuario
 

@@ -27,14 +27,14 @@ void abrirSuper(superMerc *super)
 	super->cajeras = 0; // ponemos las cajeras en 0
 
 	// pedimos al usuario que ingrese el nombre del SuperMercado 
-	puts("Ingrese el nombre del SuperMercado (sin espacios): ");
+	puts("Ingrese el nombre del SuperMercado: ");
 	fflush(stdin); // Borrar el buffer
 	gets(super->nombreSuper);
 	strupr(super->nombreSuper); // pasamos todo a Mayusculas
 	puts("Ingresa el numero de cajeras que atenderan : ");
 	scanf("%d", &cajas);
 
-	if(cajas == 0)
+	if(cajas <= 0)
 	{
 		puts("ERROR : Debe haber alguna cajera atendiendo "); // no tiene cajeras
 		exit(0);
